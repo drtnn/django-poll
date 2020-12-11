@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Главная</title>
+</head>
+<body>
+	<style>
+		h1 {
+			text-align: center;
+			font-size: 45px;
+		}
+		h2 {
+			text-align: center;
+			font-size: 30px;
+		}
+
+		a {
+			text-decoration: none;
+			color: black;
+		}
+
+		a:hover {
+			color: gray;
+		}
+	</style>
+	<main>
+		{% if actual_polls %}
+		<h1>
+			Актуальные опросы:
+		</h1>
+			{% for poll in actual_polls %}
+				<h2>
+					<a href="{% url 'questions:poll' poll.poll_id %}">
+						{{poll.poll_title}}
+					</a>
+				</h2>
+			{% endfor %}
+		{% endif %}
+	</main>
+</body>
+</html>

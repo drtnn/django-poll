@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>{{ poll.poll_title }}</title>
+</head>
+<body>
+	<style>
+		main {
+			/* width: 500px;
+			margin: 0 100%; */
+			text-align: center;
+		}
+	</style>
+	<main>
+		{% if poll %}
+			<h1>
+				{{ poll.poll_title }}
+			</h1>
+			<p>
+				{{ poll.poll_desc }}
+			</p>
+			<em>
+				{{ poll.created_at }}
+			</em>
+			<br>
+			<form action="{% url 'questions:leave_poll' poll.poll_id %}" method="POST">
+				{% csrf_token %}
+				<input type="text" name="user" id="" placeholder="username:">
+				<div>
+					{% for que in questions %}
+						<h3>
+							{{que.que_title}}
+						</h3>
+						{% if que.que_type == 'text' %}
+							<input type="text" name="{{que.que_id}}" id="" placeholder="Введите ответ...">
+						{% elif que.que_type == 'many' %}
+							{% for answer in queanswers %}
+								{% if answer.que.que_id == que.que_id %}
+									<input name="{{que.que_id}}-{{answer.answer_id}}" type="checkbox" value="{{ answer.answer_id }}">{{ answer.que_answer }}<br>
+								{% endif %}
+							{% endfor %}
+						{% else %}
+							{% for answer in queanswers %}
+								{% if answer.que.que_id == que.que_id %}
+									<input name="{{que.que_id}}" type="radio" value="{{ answer.answer_id }}">{{ answer.que_answer }}<br>
+								{% endif %}
+							{% endfor %}
+						{% endif %}
+					{% endfor %}
+					<br><br><br>
+					<input type="submit" value="Отправить!">
+				</div>
+			</form>
+			{% endif %}
+	</main>
+</body>
+</html>
